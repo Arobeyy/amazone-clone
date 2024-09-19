@@ -656,5 +656,37 @@ const products = [
       "apparel",
       "mens"
     ]
+  },
+  {
+    id: "id1",
+    image: "images/products/backpack.jpg",
+    name: "Sylish backpack",
+    rating: {
+      stars: 4,
+      count: 1570
+    },
+    priceCents: 3800,
+    keywords: [
+      "backpack",
+      "black",
+      "accesory",
+      "mens"
+    ]
+  },
+  {
+    id: "bc2847e9-5323-403f-b7cf-57fde044a955",
+    image: "images/products/umbrella.jpg",
+    name: "Foldable green umbrella",
+    rating: {
+      stars: 4.5,
+      count: 579
+    },
+    priceCents: 1539,
+    keywords: [
+      "umbrella",
+      "small",
+      "rain",
+      "sun"
+    ]
   }
 ];
