@@ -2,7 +2,6 @@ import {cart, addToCart, calculateCartQuantity} from '../data/cart.js';
 import { products } from '../data/products.js';
 import { formatCurrency } from './utils/money.js';
 
-updateCartQuantity();
 
 let productHTML = ``;
 
@@ -68,6 +67,8 @@ function updateCartQuantity() {
   //f cartQuantity has a truthy value  it is assigned to innerHTML.
   //If cartQuantity is falsy falls back to an empty string ('').
 }
+
+updateCartQuantity();
 
 const addedMsgtimeoutId = {};
 
