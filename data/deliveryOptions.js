@@ -30,6 +30,18 @@ export function getDeliveryOption(deliveryOptionId) {
   return deliveryOption || deliveryOption[0];
 }
 
+export function checkValidDeliveryOption (deliveryOptionId) {
+  let found = false;
+
+  deliveryOptions.forEach((option) => {
+    if (option.id === deliveryOptionId) {
+      found = true;
+    }
+  });
+
+  return found;
+}
+
 function isWeekend (date) {
   const dayOfWeek = date.format('dddd');
   return dayOfWeek === 'Saturday' || dayOfWeek === 'Sunday';

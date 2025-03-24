@@ -1,3 +1,5 @@
+import { checkValidDeliveryOption } from "./deliveryOptions.js";
+
 export let cart;
 
 loadFromStorage();
@@ -85,6 +87,10 @@ export function updateDeliveryOption(productId, deliveryOptionId) {
   if (!matchingItem) {
     console.error(`Product with ID ${productId} not found in cart.`);
     return; // Prevents trying to access properties of undefined
+  }
+
+  if(!checkValidDeliveryOption(deliveryOptionId)) {
+    return;
   }
 
   matchingItem.deliveryOptionId = deliveryOptionId;
