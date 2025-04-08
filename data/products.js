@@ -557,3 +557,15 @@ export const products = [
   }
   return new Product(productDetails);
 });
+
+
+/*
+function logThis () {
+  console.log(this);
+}
+logThis();
+
+//inside a function, we can change "this" to whatever we want using .call()
+logThis.call('hello');
+
+*/
