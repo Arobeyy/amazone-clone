@@ -1,12 +1,14 @@
-import {cart, addToCart, calculateCartQuantity} from '../data/cart.js';
-import { products } from '../data/products.js';
-import { formatCurrency } from './utils/money.js';
+import { cart, addToCart, calculateCartQuantity } from "../data/cart.js";
+import { products, loadProducts } from "../data/products.js";
+import { formatCurrency } from "./utils/money.js";
 
+loadProducts(renderProductsGrid);
 
-let productHTML = ``;
+function renderProductsGrid() {
+  let productHTML = ``;
 
-products.forEach((product) => {
-  productHTML += `
+  products.forEach((product) => {
+    productHTML += `
     <div class="product-container">
         <div class="product-image-container">
           <img class="product-image"
@@ -58,46 +60,46 @@ products.forEach((product) => {
           Add to Cart
         </button>
       </div>`;
-});
+  });
 
-function updateCartQuantity() {
-  const cartQuantity = calculateCartQuantity();
-  document.querySelector('.js-cart-quantity')
-    .innerHTML = cartQuantity > 0 ? cartQuantity : '';
+  function updateCartQuantity() {
+    const cartQuantity = calculateCartQuantity();
+    document.querySelector(".js-cart-quantity").innerHTML =
+      cartQuantity > 0 ? cartQuantity : "";
 
-  // document.querySelector('.js-cart-quantity').innerHTML = cartQuantity||'';
-  //f cartQuantity has a truthy value  it is assigned to innerHTML.
-  //If cartQuantity is falsy falls back to an empty string ('').
-}
-
-updateCartQuantity();
-
-const addedMsgtimeoutId = {};
-
-function showAddedMsg (productId) {
-  const addedMsg = document.querySelector(`.js-added-to-cart-${productId}`);
-
-  addedMsg.classList.add('added-to-cart-visible');
-
-  const previousTimeoutId = addedMsgtimeoutId[productId];
-  if (previousTimeoutId) {
-    clearTimeout(previousTimeoutId);
+    // document.querySelector('.js-cart-quantity').innerHTML = cartQuantity||'';
+    //f cartQuantity has a truthy value  it is assigned to innerHTML.
+    //If cartQuantity is falsy falls back to an empty string ('').
   }
 
-  const timeoutId = setTimeout( () => {
-    addedMsg.classList.remove('added-to-cart-visible');
-  },2000);
+  updateCartQuantity();
 
-  addedMsgtimeoutId[productId] = timeoutId;
-}
+  const addedMsgtimeoutId = {};
 
-document.querySelector('.js-products-grid').innerHTML = productHTML;
-document.querySelectorAll('.js-add-to-cart')
-  .forEach((button) => {
-    button.addEventListener('click', () => {
-      const {productId} = button.dataset;
+  function showAddedMsg(productId) {
+    const addedMsg = document.querySelector(`.js-added-to-cart-${productId}`);
+
+    addedMsg.classList.add("added-to-cart-visible");
+
+    const previousTimeoutId = addedMsgtimeoutId[productId];
+    if (previousTimeoutId) {
+      clearTimeout(previousTimeoutId);
+    }
+
+    const timeoutId = setTimeout(() => {
+      addedMsg.classList.remove("added-to-cart-visible");
+    }, 2000);
+
+    addedMsgtimeoutId[productId] = timeoutId;
+  }
+
+  document.querySelector(".js-products-grid").innerHTML = productHTML;
+  document.querySelectorAll(".js-add-to-cart").forEach((button) => {
+    button.addEventListener("click", () => {
+      const { productId } = button.dataset;
       addToCart(productId);
       updateCartQuantity();
-      showAddedMsg(productId);     
+      showAddedMsg(productId);
     });
   });
+}
