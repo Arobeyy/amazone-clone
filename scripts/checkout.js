@@ -14,14 +14,19 @@ import { loadCart } from "../data/cart.js";
 //Async = makes a function return a promise
 //Await = makes an async function wait for a promise
 
-async function loadPage () {
-  await loadProductsFetch();
+async function loadPage() {
+  try {
+    await loadProductsFetch();
 
-  await new Promise((resolve) => {
-    loadCart(() => {
-      resolve();
+    const value = await new Promise((resolve) => {
+      loadCart(() => {
+        resolve();
+      });
     });
-  })
+
+  } catch (error) {
+    console.log('Unexpected error. Please try again later.');
+  }
 
   renderCheckoutHeader();
   renderOrderSummary();
