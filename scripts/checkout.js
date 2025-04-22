@@ -11,6 +11,26 @@ import { loadCart } from "../data/cart.js";
 
 //promise.all() runs multiple promises at the same time and wait for all of them to finish
 
+//Async = makes a function return a promise
+//Await = makes an async function wait for a promise
+
+async function loadPage () {
+  await loadProductsFetch();
+
+  await new Promise((resolve) => {
+    loadCart(() => {
+      resolve();
+    });
+  })
+
+  renderCheckoutHeader();
+  renderOrderSummary();
+  renderPaymentSummary();
+}
+
+loadPage();
+
+/*
 Promise.all([
   loadProductsFetch(),
   new Promise((resolve) => {
@@ -26,6 +46,7 @@ Promise.all([
   renderOrderSummary();
   renderPaymentSummary();
 });
+*/
 
 /*
 new Promise((resolve) => {
