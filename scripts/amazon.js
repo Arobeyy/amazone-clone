@@ -1,6 +1,9 @@
 import { cart, addToCart, calculateCartQuantity } from "../data/cart.js";
 import { products, loadProducts } from "../data/products.js";
+import { renderHeader } from "./utils/amazon-header.js";
 import { formatCurrency } from "./utils/money.js";
+
+renderHeader();
 
 loadProducts(renderProductsGrid);
 
@@ -24,7 +27,10 @@ function renderProductsGrid() {
         }
       });
 
-      return matchingKeyword || product.name.toLowerCase().includes(search.toLocaleLowerCase());
+      return (
+        matchingKeyword ||
+        product.name.toLowerCase().includes(search.toLocaleLowerCase())
+      );
     });
   }
   //shows only filtered product if search exist
@@ -118,6 +124,15 @@ function renderProductsGrid() {
     const search = document.querySelector(".js-search-bar").value;
     window.location.href = `amazon.html?search=${search}`;
   });
+
+  document
+    .querySelector(".js-search-bar")
+    .addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        const searchTerm = document.querySelector(".js-search-bar").value;
+        window.location.href = `amazon.html?search=${searchTerm}`;
+      }
+    });
 
   document.querySelector(".js-products-grid").innerHTML = productHTML;
   document.querySelectorAll(".js-add-to-cart").forEach((button) => {

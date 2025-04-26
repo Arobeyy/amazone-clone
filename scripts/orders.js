@@ -3,6 +3,9 @@ import { orders } from "../data/orders.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 import { formatCurrency } from "./utils/money.js";
 import { addToCart } from "../data/cart.js";
+import { renderHeader } from "./utils/amazon-header.js";
+
+renderHeader();
 
 async function loadPage() {
   await loadProductsFetch();
@@ -84,15 +87,19 @@ async function loadPage() {
     button.addEventListener("click", () => {
       addToCart(button.dataset.productId);
 
-      // (Optional) display a message that the product was added,
-      // then change it back after a second.
-      button.innerHTML = "Added";
-      setTimeout(() => {
-        button.innerHTML = `
-          <img class="buy-again-icon" src="images/icons/buy-again.png">
-          <span class="buy-again-message">Buy it again</span>
-        `;
-      }, 1000);
+      // Save original button HTML
+    const originalHTML = button.innerHTML;
+
+    // Show "Added"
+    button.innerHTML = "Added";
+
+    setTimeout(() => {
+      // Restore the original button
+      button.innerHTML = originalHTML;
+
+      // Then redirect to checkout
+      window.location.href = "checkout.html";
+    }, 1000);
     });
   });
 }

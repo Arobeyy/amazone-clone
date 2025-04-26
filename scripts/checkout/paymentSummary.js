@@ -3,6 +3,8 @@ import { getProduct } from "../../data/products.js";
 import { getDeliveryOption } from "../../data/deliveryOptions.js";
 import { formatCurrency } from "../utils/money.js";
 import { addOrder } from "../../data/orders.js";
+import { clearCart } from "../../data/cart.js";
+
 
 export function renderPaymentSummary() {
   let productPriceCents = 0;
@@ -72,8 +74,7 @@ export function renderPaymentSummary() {
   const newOrderButton = summaryContainer.querySelector(".js-place-order");
   newOrderButton.addEventListener("click", async () => {
     try {
-      console.log("order is placed!");
-
+      console.log('Order is placed!');
       const response = await fetch("https://supersimplebackend.dev/orders", {
         method: "POST",
         headers: {
@@ -82,8 +83,14 @@ export function renderPaymentSummary() {
         body: JSON.stringify({ cart }),
       });
 
+      if (!response.ok) {
+        throw new Error('Failed to place order');
+      }
+
       const order = await response.json();
       addOrder(order);
+
+      clearCart();
 
       // ✅ Redirect after success
       window.location.href = "orders.html";
