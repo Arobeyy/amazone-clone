@@ -7,7 +7,20 @@ loadProducts(renderProductsGrid);
 function renderProductsGrid() {
   let productHTML = ``;
 
-  products.forEach((product) => {
+  const url = new URL(window.location.href);
+  const search = url.searchParams.get("search");
+
+  let filteredProducts = products;
+
+  // If a search exists in the URL parameters,
+  // filter the products that match the search.
+  if (search) {
+    filteredProducts = products.filter((product) => {
+      return product.name.includes(search);
+    });
+  }
+  //shows only filtered product if search exist
+  filteredProducts.forEach((product) => {
     productHTML += `
     <div class="product-container">
         <div class="product-image-container">
@@ -92,6 +105,11 @@ function renderProductsGrid() {
 
     addedMsgtimeoutId[productId] = timeoutId;
   }
+
+  document.querySelector(".js-search-button").addEventListener("click", () => {
+    const search = document.querySelector(".js-search-bar").value;
+    window.location.href = `amazon.html?search=${search}`;
+  });
 
   document.querySelector(".js-products-grid").innerHTML = productHTML;
   document.querySelectorAll(".js-add-to-cart").forEach((button) => {
