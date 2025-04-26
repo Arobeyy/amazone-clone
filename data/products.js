@@ -67,7 +67,7 @@ export class Appliance extends Product {
     this.warrantyLink = productDetails.warrantyLink;
   }
 
-  extraInfoHTML () {
+  extraInfoHTML() {
     return `
       <a href="${this.instructionsLink}" target="_blank">
         Instructions
@@ -91,15 +91,23 @@ export function loadProductsFetch() {
         if (productDetails.type === "clothing") {
           return new Clothing(productDetails);
         }
+        if (productDetails.keywords.includes("appliances")) {
+          productDetails.type = "appliance";
+          productDetails.instructionsLink = "images/appliance-instructions.png";
+          productDetails.warrantyLink = "images/appliance-warranty.png";
+
+          return new Appliance(productDetails);
+        }
         return new Product(productDetails);
       });
 
       console.log("load products");
-    }).catch((error) => {
-      console.log('Unexpected error. Please try again later.');
+    })
+    .catch((error) => {
+      console.log("Unexpected error. Please try again later.");
     });
 
-    return promise;
+  return promise;
 }
 
 /*
@@ -115,16 +123,14 @@ export function loadProducts(fun) {
     products = JSON.parse(xhr.response).map((productDetails) => {
       if (productDetails.type === "clothing") {
         return new Clothing(productDetails);
-      } 
-      if(productDetails.keywords.includes('appliances')) {
-        productDetails.type = 'appliance';
-        productDetails.instructionsLink = 
-        'images/appliance-instructions.png';
-        productDetails.warrantyLink = 
-       'images/appliance-warranty.png';
-     
+      }
+      if (productDetails.keywords.includes("appliances")) {
+        productDetails.type = "appliance";
+        productDetails.instructionsLink = "images/appliance-instructions.png";
+        productDetails.warrantyLink = "images/appliance-warranty.png";
+
         return new Appliance(productDetails);
-     }
+      }
       return new Product(productDetails);
     });
 
@@ -132,14 +138,13 @@ export function loadProducts(fun) {
     fun();
   });
 
-  xhr.addEventListener('error', (error) => {
-    console.log('Unexpected error. Please try again later.');
+  xhr.addEventListener("error", (error) => {
+    console.log("Unexpected error. Please try again later.");
   });
 
   xhr.open("GET", "https://supersimplebackend.dev/products");
   xhr.send();
 }
-
 
 /*
 export const products = [

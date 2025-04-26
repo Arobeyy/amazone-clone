@@ -34,8 +34,7 @@ export function renderPaymentSummary() {
 
     <div class="payment-summary-row">
       <div>Shipping &amp; handling:</div>
-      <div class="payment-summary-money 
-      js-payment-summary-shipping">
+      <div class="payment-summary-money js-payment-summary-shipping">
         $${formatCurrency(shippingPriceCents)}
       </div>
     </div>
@@ -56,43 +55,40 @@ export function renderPaymentSummary() {
 
     <div class="payment-summary-row total-row">
       <div>Order total:</div>
-      <div class="payment-summary-money
-      js-payment-summary-total">
+      <div class="payment-summary-money js-payment-summary-total">
         $${formatCurrency(totalCents)}
       </div>
     </div>
 
-    <button class="place-order-button button-primary
-    js-place-order">
+    <button class="place-order-button button-primary js-place-order">
       Place your order
     </button>
   `;
 
-  document.querySelector(".js-payment-summary").innerHTML = paymentSummaryHTML;
+  const summaryContainer = document.querySelector(".js-payment-summary");
+  summaryContainer.innerHTML = paymentSummaryHTML;
 
-  document
-    .querySelector(".js-payment-summary")
-    .addEventListener("click", async (e) => {
-      try {
-        if (e.target.classList.contains("js-place-order")) {
-          const response = await fetch(
-            "https://supersimplebackend.dev/orders",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ cart }),
-            }
-          );
+  // 🛑 Prevent multiple listeners by removing any existing one first
+  const newOrderButton = summaryContainer.querySelector(".js-place-order");
+  newOrderButton.addEventListener("click", async () => {
+    try {
+      console.log("order is placed!");
 
-          const order = await response.json();
-          addOrder(order);
-        }
-      } catch (error) {
-        console.log("Unexpected error. Try again later.");
-      }
+      const response = await fetch("https://supersimplebackend.dev/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ cart }),
+      });
 
-      window.location.href = 'orders.html';
-    });
+      const order = await response.json();
+      addOrder(order);
+
+      // ✅ Redirect after success
+      window.location.href = "orders.html";
+    } catch (error) {
+      console.log("Unexpected error. Try again later.");
+    }
+  });
 }
