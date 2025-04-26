@@ -8,10 +8,8 @@ describe("test suite: renderOrderSummary", () => {
   const product1name = "Black and Gray Athletic Cotton Socks - 6 Pairs";
   const product2name = "Intermediate Size Basketball";
 
-  beforeAll((done) => {
-    loadProductsFetch().then(() => {
-      done();
-    });
+  beforeAll(async () => {
+    await loadProductsFetch();
   });
 
   beforeEach(() => {
@@ -61,10 +59,10 @@ describe("test suite: renderOrderSummary", () => {
     ).toEqual(product1name);
     expect(
       document.querySelector(`.js-product-price-${productId1}`).innerText
-    ).toContain('$');
+    ).toContain("$");
     expect(
       document.querySelector(`.js-product-price-${productId2}`).innerText
-    ).toEqual('$20.95');
+    ).toEqual("$20.95");
   });
 
   it("removes a product", () => {
@@ -85,22 +83,23 @@ describe("test suite: renderOrderSummary", () => {
     expect(cart[0].productId).toEqual(productId2);
   });
 
-  it('updates the delivery option', () => {
+  it("updates the delivery option", () => {
     document.querySelector(`.js-delivery-option-${productId1}-3`).click();
 
     expect(
-      document.querySelector(`.js-delivery-option-input-${productId1}-3`).checked
+      document.querySelector(`.js-delivery-option-input-${productId1}-3`)
+        .checked
     ).toEqual(true);
 
     expect(cart.length).toEqual(2);
     expect(cart[0].productId).toEqual(productId1);
-    expect(cart[0].deliveryOptionId).toEqual('3');
+    expect(cart[0].deliveryOptionId).toEqual("3");
 
     expect(
-      document.querySelector('.js-payment-summary-shipping').innerText
-    ).toEqual('$14.98');
+      document.querySelector(".js-payment-summary-shipping").innerText
+    ).toEqual("$14.98");
     expect(
-      document.querySelector('.js-payment-summary-total').innerText
-    ).toEqual('$63.50');
+      document.querySelector(".js-payment-summary-total").innerText
+    ).toEqual("$63.50");
   });
 });
